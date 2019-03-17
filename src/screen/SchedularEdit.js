@@ -185,9 +185,12 @@ class SignInScreen extends React.Component {
             <ScrollView >
 
                 <View style={styles.center}>
+                <TouchableOpacity style={styles.touchable} onPress={() => this.props.navigation.goBack()}>
+
                     <Image
                         source={TOPLOGO}
                     />
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.containerStyle} >
                     <Input

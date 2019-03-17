@@ -13,6 +13,8 @@ import SignInScreen from './screen/Signin';
 import HomeScreen from './screen/Home';
 import RegisterScreen from './screen/Register';
 import ForgotScreen from './screen/Forgot';
+import ForgotMsgScreen from './screen/ForgotMsg';
+import ForgotResetScreen from './screen/ForgotReset';
 import PinScreen from './screen/Forgot';
 import Message1Screen from './screen/Message1';
 import Message2Screen from './screen/Message2';
@@ -22,6 +24,7 @@ import SchedularEditScreen from './screen/SchedularEdit';
 import MessageListScreen from './screen/MessageList';
 import MessageArchiveScreen from './screen/MessageArchive';
 import ProfileScreen from './screen/Profile';
+import PhoneStartScreen from './screen/PhoneStart';
 
 class AuthLoadingScreen extends React.Component {
   constructor() {
@@ -64,8 +67,8 @@ const AppStack = createStackNavigator({
 }, { headerMode: 'none' });
 const AuthStack = createStackNavigator(
   {
-    SignIn: SignInScreen, Register: RegisterScreen, Forgot: ForgotScreen, Pin: PinScreen,
-    message1: Message1Screen, message2: Message2Screen
+    SignIn: SignInScreen,PhoneStart:PhoneStartScreen, Register: RegisterScreen, Forgot: ForgotScreen, Pin: PinScreen,
+    message1: Message1Screen, message2: Message2Screen, ForgotMsg: ForgotMsgScreen, ForgotReset: ForgotResetScreen
   }, { headerMode: 'none' });
 
 

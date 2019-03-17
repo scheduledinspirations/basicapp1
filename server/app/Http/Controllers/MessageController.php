@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Message;
 use Auth;
+use Carbon\Carbon;
 
 class MessageController extends Controller
 {
@@ -42,9 +43,14 @@ class MessageController extends Controller
         'phone' => 'required',
         'message' => 'required',
         'date' => 'required',
-        'time' => 'required'
-         ]);
-        if(Auth::user()->message()->Create($request->all())){
+        'time' => 'required',
+
+          ]);
+        $data=$request->all();
+        
+        $data['notificationTime'] =Carbon::parse($request->input('date'))->createFromTimeString($request->input('time'))->toDateTimeString();
+        
+        if(Auth::user()->message()->Create($data)){
             return response()->json(['status' => 'success']);
         }else{
             return response()->json(['status' => 'fail']);
@@ -94,7 +100,10 @@ class MessageController extends Controller
         'time' => 'filled'
          ]);
         $message = Message::find($id);
-        if($message->fill($request->all())->save()){
+          $data=$request->all();
+        
+        $data['notificationTime'] =Carbon::parse($request->input('date'))->createFromTimeString($request->input('time'))->toDateTimeString();
+        if($message->fill($data)->save()){
            return response()->json(['status' => 'success']);
         }
         return response()->json(['status' => 'failed']);

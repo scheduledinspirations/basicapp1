@@ -27,13 +27,7 @@ class SignInScreen extends React.Component {
     super(props);
 
   }
-  submitLoginCredentials() {
-    const { showLoading } = this.state;
-
-    this.setState({
-      showLoading: !showLoading
-    });
-  }
+   
   validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -61,7 +55,9 @@ class SignInScreen extends React.Component {
     });
   }
   validateAction = () => {
-    if (!this.state.email_valid || !this.state.password_valid) return false;
+    if (!this.state.email_valid ) return false;
+    if (!this.state.password_valid ) return false;
+
     return true;
   }
   onButtonPress = () => {
@@ -69,10 +65,12 @@ class SignInScreen extends React.Component {
       email_valid: this.validateEmail(this.state.email),
       error: false,
       password_valid: this.validatePassword(this.state.password)
+    },()=>{
+       if (this.validateAction()) {
+          this.getLoginToken();
+      }
     });
-    if (this.validateAction()) {
-      this.getLoginToken();
-    }
+   
 
   }
   getLoginToken = () => {
@@ -157,22 +155,19 @@ class SignInScreen extends React.Component {
 
           <TouchableOpacity style={styles.right} onPress={this.onForgotPress}>
 
-            <Text style={[styles.text, { padding: 5 }]}>Forgot Password ?</Text>
+            <Text style={[styles.text, { padding: 15 }]}>Forgot Password ?</Text>
           </TouchableOpacity>
           <Text style={{ textAlign: 'center', fontSize: 12, color: 'red', padding: 5 }}>{this.state.error}</Text>
           <TouchableOpacity style={styles.touchable} onPress={this.onButtonPress}>
-
             <Image
               source={subBtnImg}
               resizeMode={'contain'}
               style={styles.image}
             />
-
-
           </TouchableOpacity>
           <TouchableOpacity style={styles.touchable} onPress={this.onRigsterPress}>
 
-            <Text style={[styles.text, { padding: 10 }]}>Need an account <Text style={{ fontWeight: 'bold' }}>? Signup here.</Text>
+            <Text style={[styles.text, { padding: 20 }]}>Need an account <Text style={{ fontWeight: 'bold' }}>? Signup here.</Text>
             </Text>
 
 

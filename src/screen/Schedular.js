@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { TimePickerAndroid, DatePickerAndroid, ScrollView, TouchableOpacity, Image, Text, View, AsyncStorage, ImageBackground, Dimensions, Platform } from "react-native";
 import { Card, Button, FormLabel, FormInput, FormValidationMessage, Input, Icon } from "react-native-elements";
 import { CONF, styles, URL, axiosCall } from './common';
+import Moment from 'moment';
 
 const BG_IMAGE = require('../../assets/img/main-bg.jpg');
 const LOGO = require('../../assets/img/logo.png');
@@ -30,6 +31,7 @@ class SignInScreen extends React.Component {
   };
   constructor(props) {
     super(props);
+
 
   }
 
@@ -154,7 +156,9 @@ class SignInScreen extends React.Component {
     }
   }
   componentDidMount() {
-    if (this.props.navigation.state.params.id) {
+    console.log(this.props.navigation.state);
+this.setState({time:Moment().format('h:m'), date: Moment().format('YYYY-MM-DD')}) ;
+    if (typeof this.props.navigation.state.params !== 'undefined') {
       const data = this.props.navigation.state.params;
       this.setState({
         name: data.name,
@@ -162,17 +166,28 @@ class SignInScreen extends React.Component {
         message: data.message,
 
       });
-    }
+   }
+
   }
+  showTime = () => {
+         date1 = this.state.date + ' ' + this.state.time;
+        return Moment(date1).format('h:mm a');
+        
+    }
+
   render() {
 
     return (
       <ScrollView >
 
         <View style={styles.center}>
-          <Image
-            source={TOPLOGO}
-          />
+          <TouchableOpacity style={styles.touchable} onPress={() => this.navigate.navigation('Home')}>
+
+            <Image
+
+              source={TOPLOGO}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.containerStyle} >
           <Input
@@ -244,7 +259,7 @@ class SignInScreen extends React.Component {
             placeholder=""
             label="Send time"
             labelStyle={{ marginTop: 10 }}
-            value={this.state.time}
+            value={this.showTime()}
             autoCorrect={false}
             //placeholderTextColor="black"
             errorStyle={{ textAlign: 'center', fontSize: 12 }}

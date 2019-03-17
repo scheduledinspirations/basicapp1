@@ -30,11 +30,8 @@ class SignInScreen extends React.Component {
     }
 
     onButtonPress = () => {
-        this.setState({
-            email_valid: this.validateEmail(this.state.email),
-            password_valid: this.validatePassword(this.state.password),
-        });
-        this.props.navigation.navigate('message2');
+
+        this.props.navigation.navigate('PhoneStart');
     }
 
     render() {

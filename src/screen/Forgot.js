@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 
 import { TouchableOpacity, Image, Text, View, AsyncStorage, ImageBackground, Dimensions, Platform } from "react-native";
 import { Card, Button, FormLabel, FormInput, FormValidationMessage, Input, Icon } from "react-native-elements";
-import { CONF, styles } from './common';
+import { CONF, styles, validateEmail, axiosCall } from './common'; import Loader from './common/Loader';
+
 
 const BG_IMAGE = require('../../assets/img/main-bg.jpg');
 const LOGO = require('../../assets/img/logo.png');
-const subBtnImg = require('../../assets/img/signupbtn.png');
+const subBtnImg = require('../../assets/img/next.png');
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -17,32 +18,82 @@ class SignInScreen extends React.Component {
         fontLoaded: false,
         email: '',
         email_valid: true,
-        password: '',
-        login_failed: false,
-        password_valid: true,
+
+        error: false,
+
         showLoading: false
     };
     constructor(props) {
         super(props);
-        console.log('state-', this.state);
-        console.log('prop-', this.props);
     }
+    validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+        return re.test(email);
+    }
+    validateAction = () => {
+        if (!this.state.email_valid) return false;
+        return true;
+    }
+    onButtonPress = () => {
+        this.setState({
+            email_valid: this.validateEmail(this.state.email),
+            error: false
+
+        }, () => {
+            if (this.validateAction()) {
+                this.doForgot();
+            }
+        });
+
+    }
+    doForgot = async () => {
+        const a = await axiosCall();
+        const data = {
+            email: this.state.email
+        }
+        this.setState({
+            showLoading: true
+        });
+        a.post('password/email', data).then(res => {
+            //console.log('response:', res);
+            this.setState({
+                showLoading: false
+            });
+            this.props.navigation.navigate('ForgotMsg');
+        }).catch(error => {
+            this.setState({
+                showLoading: false,
+                error: "Error please try again"
+            });
+            console.log('error', error);
+        });
+
+    }
+    onEmailChange(email) {
+
+        this.setState({
+            email: email, error: false,
+            email_valid: this.validateEmail(email)
+        });
+    }
     onForgotPress = () => {
         this.props.navigation.navigate('Forgot');
     }
     render() {
         return (
             <View style={styles.container}>
-
+                <Loader loading={this.state.showLoading} />
                 {/* <ImageBackground
           source={BG_IMAGE}
           style={styles.bgImage}
         > */}
                 <View style={styles.center}>
-                    <Image
-                        source={LOGO}
-                    />
+                    <TouchableOpacity style={styles.touchable} onPress={() => this.props.navigation.navigate('SignIn')}>
+                        <Image
+                            source={LOGO}
+                        />
+                    </TouchableOpacity>
                     <Text style={{ fontSize: 16 }}>
                         ScheduleInspriration
         </Text>
@@ -68,7 +119,7 @@ class SignInScreen extends React.Component {
 
 
 
-                    <TouchableOpacity style={styles.touchable} onPress={this.onButtonPress}>
+                    <TouchableOpacity style={[styles.touchable]} onPress={this.onButtonPress}>
 
                         <Image
                             source={subBtnImg}

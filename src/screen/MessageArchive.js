@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { FlatList, ScrollView, Image, Text, View, Dimensions, Platform, Alert } from "react-native";
+import { TouchableOpacity, FlatList, ScrollView, Image, Text, View, Dimensions, Platform, Alert } from "react-native";
 import { ListItem, Icon, Button } from "react-native-elements";
 import { CONF, styles, axiosCall, Confirm } from './common';
 import Loader from './common/Loader';
@@ -28,6 +28,9 @@ class SignInScreen extends React.Component {
     };
     constructor(props) {
         super(props);
+    }
+
+    componentWillMount() {
         this.geteMessages();
     }
     onEditPress = (item) => {
@@ -89,7 +92,9 @@ class SignInScreen extends React.Component {
         return Moment(date1).format('h:mm a');
     }
     geteMessages = async () => {
-
+        this.setState({
+            showLoading: true
+        });
         const a = await axiosCall();
         a.get('api/message/archive').then(res => {
             console.log(res);
@@ -122,9 +127,12 @@ class SignInScreen extends React.Component {
             <View style={styles.container}>
                 <Loader loading={this.state.showLoading} />
                 <View style={styles.center}>
-                    <Image
-                        source={TOPLOGO}
-                    />
+                    <TouchableOpacity style={styles.touchable} onPress={() => this.props.navigation.navigate('Home')}>
+
+                        <Image
+                            source={TOPLOGO}
+                        />
+                    </TouchableOpacity>
                     <Text style={{ fontSize: 16 }}>
                         ScheduleInspriration
                     </Text>

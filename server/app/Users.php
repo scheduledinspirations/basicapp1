@@ -24,4 +24,12 @@ class Users extends Model implements Authenticatable
     {
         return $this->hasMany('App\Message','user_id');
     }
+     public function verifyEmail()
+    {
+        return $this->hasOne('App\VerifyEmail', 'user_id');
+    }
+    public function passwordReset()
+    {
+        return $this->hasOne('App\PasswordResets', 'user_id');
+    }
 }

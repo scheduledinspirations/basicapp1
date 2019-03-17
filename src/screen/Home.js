@@ -43,7 +43,7 @@ class SignInScreen extends React.Component {
   }
   logout = () => {
     AsyncStorage.clear()
-    this.props.navigation.navigate('home');
+    this.props.navigation.navigate('SignIn');
   }
 
 

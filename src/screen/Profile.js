@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { ScrollView, TouchableOpacity, Image, Text, View, AsyncStorage, ImageBackground, Dimensions, Platform } from "react-native";
+import { TouchableOpacity, ScrollView, Image, Text, View, AsyncStorage, ImageBackground, Dimensions, Platform } from "react-native";
 import { Card, Button, FormLabel, FormInput, FormValidationMessage, Input, Icon } from "react-native-elements";
 import { CONF, styles, axiosCall, requiredData } from './common';
 import Loader from './common/Loader';
@@ -142,9 +142,12 @@ class SignInScreen extends React.Component {
             <ScrollView >
 
                 <View style={styles.center}>
-                    <Image
-                        source={TOPLOGO}
-                    />
+                    <TouchableOpacity style={styles.touchable} onPress={() => this.props.navigation.navigate('Home')}>
+
+                        <Image
+                            source={TOPLOGO}
+                        />
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.containerStyle} ><Loader loading={this.state.showLoading} />
                     <Input
